@@ -19,23 +19,32 @@ app = FastAPI()
 
 
 @app.get("/download")
-def download(video_url: str) -> Response:
+def download(
+    video_url: str,
+    duration_max: int | None = DURATION_MAX,
+    format: str | None = FORMAT,
+    format_sort: str | None = FORMAT_SORT,
+) -> Response:
     filename = str(uuid4())
-    file = download_video(video_url, filename) or download_thumbnail(
-        video_url,
-        filename,
-    )
+    file = download_video(video_url, filename, duration_max, format, format_sort)
+    file = file or download_thumbnail(video_url, filename)
     return FileResponse(file, background=BackgroundTask(file.unlink))
 
 
-def download_video(video_url: str, filename: str) -> Path | None:
+def download_video(
+    video_url: str,
+    filename: str,
+    duration_max: int | None,
+    format: str | None,
+    format_sort: str | None,
+) -> Path | None:
     params = prepare_target_params(filename)
-    if FORMAT:
-        params["format"] = FORMAT
-    if FORMAT_SORT:
-        params["format_sort"] = [FORMAT_SORT]
-    if DURATION_MAX:
-        params["match_filter"] = match_filter_func(f"duration<={DURATION_MAX}")
+    if format is not None:
+        params["format"] = format
+    if format_sort is not None:
+        params["format_sort"] = [format_sort]
+    if duration_max is not None:
+        params["match_filter"] = match_filter_func(f"duration<={duration_max}")
     return download_file(params, video_url, filename)
 
 

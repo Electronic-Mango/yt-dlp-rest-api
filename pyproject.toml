@@ -1,5 +1,5 @@
 [project]
-name = "yt-dlp-rest-api"
+name = "ytdlp-rest-api"
 version = "0.1.0"
 description = "Send URL, get the video back."
 readme = "README.md"

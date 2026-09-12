@@ -19,5 +19,5 @@ COPY src ./src
 RUN --mount=type=cache,target=/root/.cache/uv \
     uv sync --locked
 
-ENTRYPOINT ["fastapi", "run", "src/yt_dlp_rest_api/main.py"]
+ENTRYPOINT ["fastapi", "run", "src/main.py"]
 CMD ["--host", "0.0.0.0"]

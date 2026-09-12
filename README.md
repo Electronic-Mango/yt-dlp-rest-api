@@ -13,8 +13,8 @@ Built with `Python 3.14`,  [`FastAPI`](https://fastapi.tiangolo.com/) and is man
 
 ## Usage
 
-You can control maximum video duration (in seconds) before API responds with just a thumbnail through `DURATION_MAX` environment variable.
-If `DURATION_MAX` is not set, or set to 0 all videos will be downloaded.
+You can control maximum video duration (in seconds) before API responds with just a thumbnail through `MAX_DURATION` environment variable.
+If `MAX_DURATION` is not set, or set to 0 all videos will be downloaded.
 
 You can control format of downloaded file through optional `FORMAT` environment variable.
 If it's not set then the best available format is used (which might depend on whether `ffmpeg`) is installed.
@@ -50,7 +50,7 @@ There's only one endpoint - `download`.
 You can specify URL to download through **required** query parameter `video_url`.
 
 There are also optional query parameters corresponding to configuration environment variables:
- * `duration_max` - maximum duration (in seconds) before API will respond with a thumbnail instead of a video
+ * `max_duration` - maximum duration (in seconds) before API will respond with a thumbnail instead of a video
  * `format` - format selected for download, same as `-f`/`--formats` flag in `yt-dlp`
  * `format_sort` - sort order of formats, same as `-S`/`--format-sort` flags in `yt-dlp`
 
@@ -65,7 +65,7 @@ http://localhost:8000/download?video_url=https%3A%2F%2Fwww.youtube.com%2Fwatch%3
 
 Download video only if it's duration is lower than 30 seconds:
 ```
-http://localhost:8000/download?video_url=https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3DPc0uWhgLJ6Y&duration_max=30
+http://localhost:8000/download?video_url=https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3DPc0uWhgLJ6Y&max_duration=30
 ```
 
 

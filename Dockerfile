@@ -1,14 +1,23 @@
 FROM python:3.14-slim
 
 COPY --from=denoland/deno:bin /deno /usr/local/bin/deno
+COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
 RUN apt-get update && apt-get install -y --no-install-recommends ffmpeg ca-certificates
 
 WORKDIR /app
 
-COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+ENV UV_NO_DEV=1
 
-COPY main.py .
+RUN --mount=type=cache,target=/root/.cache/uv \
+    --mount=type=bind,source=uv.lock,target=uv.lock \
+    --mount=type=bind,source=pyproject.toml,target=pyproject.toml \
+    uv sync --locked --no-install-project
 
-ENTRYPOINT ["fastapi", "run", "main.py"]
+COPY .python-version pyproject.toml uv.lock ./
+COPY src ./src
+
+RUN --mount=type=cache,target=/root/.cache/uv \
+    uv sync --locked
+
+ENTRYPOINT ["fastapi", "run", "src/yt_dlp_rest_api/main.py"]
 CMD ["--host", "0.0.0.0"]

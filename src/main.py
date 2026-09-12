@@ -6,6 +6,7 @@ from uuid import uuid4
 from dotenv import load_dotenv
 from fastapi import FastAPI, Response
 from fastapi.responses import FileResponse
+from loguru import logger
 from starlette.background import BackgroundTask
 from yt_dlp import YoutubeDL, match_filter_func
 
@@ -28,10 +29,13 @@ def download(
     format: str | None = DEFAULT_FORMAT,
     format_sort: str | None = DEFAULT_FORMAT_SORT,
 ) -> Response:
+    logger.info(f"[{video_url}] Received request")
     filename = str(uuid4())
     params = video_params(max_duration, format, format_sort)
     file = download_file(video_url, filename, params)
-    file = file or download_file(video_url, filename, THUMBNAIL_PARAMS)
+    if not file:
+        logger.info(f"[{video_url}] Falling back to thumbnail")
+        file = download_file(video_url, filename, THUMBNAIL_PARAMS)
     return FileResponse(file, background=BackgroundTask(file.unlink))
 
 

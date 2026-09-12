@@ -19,6 +19,7 @@ dev = ["ruff>=0.16.7"]
 [tool.ruff.lint]
 select = ["ALL"]
 ignore = [
+    "A002",   # "format" shadows a builtin, but it also exactly matches yt-dlp parameter
     "COM812", # Avoid issues with formatter
     "CPY001", # Copyright notice isn't necessary here
     "D1",     # Ignore all missing docstring rules

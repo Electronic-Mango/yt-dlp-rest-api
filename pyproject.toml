@@ -4,7 +4,7 @@ version = "0.1.0"
 description = "Send URL, get the video back."
 readme = "README.md"
 authors = [
-    { name = "Electronic Mango", email = "78230210+Electronic-Mango@users.noreply.github.com" }
+    { name = "Electronic Mango", email = "78230210+Electronic-Mango@users.noreply.github.com" },
 ]
 requires-python = ">=3.14"
 dependencies = [
@@ -12,25 +12,16 @@ dependencies = [
     "python-dotenv>=1.2.3",
     "yt-dlp[default]>=2026.8.19",
 ]
-[project.scripts]
-yt-dlp-rest-api = "yt_dlp_rest_api:main"
-
-[build-system]
-requires = ["uv_build>=0.12.13,<0.13.0"]
-build-backend = "uv_build"
 
 [dependency-groups]
-dev = [
-    "ruff>=0.16.7",
-]
+dev = ["ruff>=0.16.7"]
 
 [tool.ruff.lint]
 select = ["ALL"]
 ignore = [
-    "COM812",  # Avoid issues with formatter
-    "CPY001",  # Copyright notice isn't necessary here
-    "D1",      # Ignore all missing docstring rules
-    "D203",    # Conflicts with D211
-    "D212",    # Conflicts with D213
+    "COM812", # Avoid issues with formatter
+    "CPY001", # Copyright notice isn't necessary here
+    "D1",     # Ignore all missing docstring rules
+    "D203",   # Conflicts with D211
+    "D212",   # Conflicts with D213
 ]
-
